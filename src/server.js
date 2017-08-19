@@ -13,4 +13,27 @@ server.use(bodyParser.json());
 
 // TODO: your code to handle requests
 
+// Get request
+server.get('/posts', (req,res) => {
+   res.send("hi I'm in posts");
+});
+
+// Post request
+server.post('/posts',(req, res) => {
+    const title = req.body.title; // entry should be { "title": "whatever you want"}
+    const contents = req.body.contents; // entry should be { "title": "whatever you want",
+                                     //                   "contents": "whatever you want"}
+    console.log(`readInPosts: ${title} ${contents}`);
+    if (!title & !contents) {
+        res.status(STATUS_USER_ERROR);
+        res.json({error: 'Must provide a value post object entry'});
+        return;
+    }
+
+    posts.push(title);
+    posts.push(contents);
+    res.json({posts});
+});
+
+
 module.exports = { posts, server };
