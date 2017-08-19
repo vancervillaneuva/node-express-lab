@@ -33,7 +33,7 @@ server.post('/posts',(req, res) => {
           contents: contents,
     };
     
-    id += id;
+    id = id + 1;
 
     if (!title & !contents) {
         res.status(STATUS_USER_ERROR);
@@ -49,6 +49,36 @@ server.post('/posts',(req, res) => {
 
 
 //Put request
+server.put('/posts',(req, res) => {
+    const id = req.body.id;
+    const title = req.body.title; // entry should be { "title": "whatever you want"}
+    const contents = req.body.contents; // entry should be { "title": "whatever you want",
+                                     //                   "contents": "whatever you want"}
+    console.log(id);
+    console.log(title);
+    console.log(contents);
+    
+    if (!id) {
+        res.status(STATUS_USER_ERROR);
+        res.json({error: 'Must provide a value post object entry'});
+        return;
+    }
+
+    posts.forEach((entry, i) => {
+        if (entry.id === id) {
+            const newData = {
+                id: id,
+                title: title,
+                contents: contents,
+            }
+            posts[i] = newData;
+        }
+    });
+    
+
+    res.json({posts});
+});
+
 
 // Delete request
 server.delete('/posts/:id',(req, res) => {
